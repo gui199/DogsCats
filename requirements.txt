@@ -2,3 +2,4 @@ Flask==1.1.2
 requests==2.23.0
 tensorflow==2.3.0 
 Keras==2.4.3 
+Pillow==7.0.0

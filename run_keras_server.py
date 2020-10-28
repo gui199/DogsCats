@@ -8,12 +8,12 @@
 
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
-from keras.models import model_from_json
-from keras.preprocessing.image import load_img
 from keras.applications import imagenet_utils
-from flask import Flask, request, render_template, jsonify
-# import numpy as np
-# import io
+from keras.models import model_from_json
+from flask import Flask, request, render_template, jsonify, abort, url_for, redirect
+from PIL import Image
+import numpy as np
+import io
 
 
 # initialize our Flask application and the Keras model
@@ -21,6 +21,7 @@ app = Flask(__name__)
 model = None
 MODELJSON = './checkpoint/model_X.json'
 MODELJSON_WEIGHTS = './checkpoint/model_X_weights.h5'
+
 
 def load_modelo():
 	# load the pre-trained Keras model (here we are using a model
@@ -35,19 +36,19 @@ def load_modelo():
 	model.load_weights(MODELJSON_WEIGHTS)
 
 
-# load and prepare the image
-def load_image(filename):
-	# load the image
-	img = load_img(filename, target_size=(224, 224))
-	# convert to array
-	img = img_to_array(img)
-	# reshape into a single sample with 3 channels
-	img = img.reshape(1, 224, 224, 3)
-	# center pixel data
-	img = img.astype('float32')
-	img = img - [123.68, 116.779, 103.939]
-	return img
+def prepare_image(image, target):
+	# if the image mode is not RGB, convert it
+	if image.mode != "RGB":
+		image = image.convert("RGB")
 
+	# resize the input image and preprocess it
+	image = image.resize(target)
+	image = img_to_array(image)
+	image = np.expand_dims(image, axis=0)
+	image = imagenet_utils.preprocess_input(image)
+
+	# return the processed image
+	return image
 
 
 def its_cat_or_dog(predict):
@@ -77,10 +78,11 @@ def predict():
 	if request.method == "POST":
 		if request.files.get("image"):
 			# read the image in PIL format
-			image_file = request.files["image"].read()			
+			image = request.files["image"].read()
+			image = Image.open(io.BytesIO(image))
 
-			# preprocess the image and prepare it for classification			
-			image = load_image(image_file)
+			# preprocess the image and prepare it for classification
+			image = prepare_image(image, target=(224, 224))
 
 			# classify the input image and then initialize the list
 			# of predictions to return to the client
