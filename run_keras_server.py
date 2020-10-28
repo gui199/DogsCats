@@ -9,12 +9,12 @@
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
 from keras.applications import imagenet_utils
+from keras.models import model_from_json
 from flask import Flask, request, render_template, jsonify, abort, url_for, redirect
 from PIL import Image
 import numpy as np
 import io
-from keras.models import load_model
-from keras.models import model_from_json
+
 
 # initialize our Flask application and the Keras model
 app = Flask(__name__)
@@ -22,17 +22,24 @@ model = None
 MODELJSON = './checkpoint/model_X.json'
 MODELJSON_WEIGHTS = './checkpoint/model_X_weights.h5'
 
+
+@app.before_first_request
 def load_modelo():
 	# load the pre-trained Keras model (here we are using a model
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
+
+	print(("* Loading Keras model and Flask starting server..."
+            "please wait until server has fully started"))
+
 	# load json and create model
 	with open(MODELJSON, 'r') as json_file:
 		loaded_model_json = json_file.read()
 	model = model_from_json(loaded_model_json)
 	# load weights into new model
 	model.load_weights(MODELJSON_WEIGHTS)
+	print("Model loaded.")
 
 
 def prepare_image(image, target):
@@ -105,8 +112,8 @@ def predict():
 # if this is the main thread of execution first load the model and
 # then start the server
 if __name__ == "__main__":
-	print(("* Loading Keras model and Flask starting server..."
-            "please wait until server has fully started"))
-	load_modelo()
+	# print(("* Loading Keras model and Flask starting server..."
+    #         "please wait until server has fully started"))
+	#load_modelo()
     #iniciar aplicativo
-	app.run(host='0.0.0.0',)
+	app.run()
