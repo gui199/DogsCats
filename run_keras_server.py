@@ -14,12 +14,10 @@ from PIL import Image
 import numpy as np
 import io
 from keras.models import load_model
-from flask_ngrok import run_with_ngrok
 from keras.models import model_from_json
 
 # initialize our Flask application and the Keras model
 app = Flask(__name__)
-#run_with_ngrok(app)  # starts ngrok when the app is run
 model = None
 MODELJSON = './checkpoint/model_X.json'
 MODELJSON_WEIGHTS = './checkpoint/model_X_weights.h5'
