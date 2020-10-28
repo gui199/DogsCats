@@ -29,6 +29,10 @@ def load_modelo():
 	# pre-trained on ImageNet and provided by Keras, but you can
 	# substitute in your own networks just as easily)
 	global model
+
+	print(("* Loading Keras model and Flask starting server..."
+            "please wait until server has fully started"))
+
 	# load json and create model
 	with open(MODELJSON, 'r') as json_file:
 		loaded_model_json = json_file.read()
@@ -108,8 +112,8 @@ def predict():
 # if this is the main thread of execution first load the model and
 # then start the server
 if __name__ == "__main__":
-	print(("* Loading Keras model and Flask starting server..."
-            "please wait until server has fully started"))
+	# print(("* Loading Keras model and Flask starting server..."
+    #         "please wait until server has fully started"))
 	#load_modelo()
     #iniciar aplicativo
 	app.run()
