@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class='upload-predict'>
+    <form id="upload-file" method="POST" enctype="multipart/form-data" action="{{ url_for('predict') }}" >
+        <span>File</span>
+        <input type="file" name="image"  placeholder="Upload your .jpg image file">   
+        <button id="upload-file-btn" class="btn btn-submit" type="submit">Predict</button>       
+    </form>
+</div>
+
+<div class='predict-result'>
+
+</div>
+{% endblock %}

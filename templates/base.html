@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Dogs and Cats</title>
+
+    {% block extrahead %}{% endblock %} 
+
+</head>
+
+<body>
+
+    <header>
+        <H1>Dogs and Cats Image Predict.</H1>
+        <img src="{{ url_for('static', filename='image/header_foto.jpeg') }}" alt="header_foto">
+    </header>
+
+    <div id="page-index">
+        {% block content %} {% endblock %}
+    </div>
+
+    <footer>
+        <p>Author: Guilherme 2020<br>
+        
+        </p>
+    </footer>
+
+</body>
+
+</html>
