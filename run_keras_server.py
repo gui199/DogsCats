@@ -23,6 +23,7 @@ MODELJSON = './checkpoint/model_X.json'
 MODELJSON_WEIGHTS = './checkpoint/model_X_weights.h5'
 
 
+@app.before_first_request
 def load_modelo():
 	# load the pre-trained Keras model (here we are using a model
 	# pre-trained on ImageNet and provided by Keras, but you can
@@ -34,6 +35,7 @@ def load_modelo():
 	model = model_from_json(loaded_model_json)
 	# load weights into new model
 	model.load_weights(MODELJSON_WEIGHTS)
+	print("Model loaded.")
 
 
 def prepare_image(image, target):
@@ -108,6 +110,6 @@ def predict():
 if __name__ == "__main__":
 	print(("* Loading Keras model and Flask starting server..."
             "please wait until server has fully started"))
-	load_modelo()
+	#load_modelo()
     #iniciar aplicativo
-	app.run(host='0.0.0.0',)
+	app.run()
