@@ -9,11 +9,10 @@
 # import the necessary packages
 from keras.preprocessing.image import img_to_array
 from keras.applications import imagenet_utils
-from flask import Flask, request, render_template, jsonify, abort, url_for, redirect
+from flask import Flask, request, render_template, jsonify
 from PIL import Image
 import numpy as np
 import io
-from keras.models import load_model
 from keras.models import model_from_json
 
 # initialize our Flask application and the Keras model
