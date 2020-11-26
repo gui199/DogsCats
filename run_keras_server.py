@@ -14,13 +14,18 @@ from flask import Flask, request, render_template, jsonify, abort, url_for, redi
 from PIL import Image
 import numpy as np
 import io
-
+from os import path
 
 # initialize our Flask application and the Keras model
 app = Flask(__name__)
 model = None
-MODELJSON = './checkpoint/model_X.json'
-MODELJSON_WEIGHTS = './checkpoint/model_X_weights.h5'
+
+if path.exists("checkpoint"):
+    MODELJSON = 'checkpoint/model_X.json'
+    MODELJSON_WEIGHTS = 'checkpoint/model_X_weights.h5'
+else:    
+    MODELJSON = 'DogsCats/checkpoint/model_X.json'
+    MODELJSON_WEIGHTS = 'DogsCats/checkpoint/model_X_weights.h5' 
 
 
 @app.before_first_request
